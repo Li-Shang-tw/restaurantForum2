@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = 'eb4a8be412ed739'
 
@@ -119,7 +120,36 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
-  }
+  },
+
+  //edit user's admin
+  editUser: (req, res) => {
+    return User.findAll().then(users => {
+      return res.render('admin/userEdit', { users: users })
+    })
+  },
+  putUser: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+
+        if (user.isAdmin) {
+          user.update({
+            isAdmin: 0
+          })
+            .then(user => {
+              return res.redirect('/admin/users');
+            })
+        } else {
+          user.update({
+            isAdmin: 1
+          })
+            .then(user => {
+              return res.redirect('/admin/users');
+            })
+        }
+      })
+  },
+
 
 }
 
