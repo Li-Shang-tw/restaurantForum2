@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const db = require('./models') // 引入資料庫
-const port = 3000
+const port = process.env.PORT || 3000
 const bodyparser = require('body-parser')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
