@@ -1,6 +1,8 @@
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController.js')
+const categoryController = require('../controllers/categoryController')
+const commentController = require('../controllers/commentController.js')
 
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -40,6 +42,8 @@ module.exports = (app, passport) => {
   })
   //列出所有restaurants的頁面
   app.get('/restaurants', authenticated, restController.getRestaurants)
+  //detail
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
   //admin首頁導向restaurants
   app.get('/admin', authenticatedAdmin, (req, res) => {
@@ -47,6 +51,12 @@ module.exports = (app, passport) => {
   })
   //列出所有restaurants的頁面
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
+
+  //comment
+  //新增
+  app.post('/comments', authenticated, commentController.postComment)
+
+
 
 
   //admin的CRUD路由
@@ -64,6 +74,24 @@ module.exports = (app, passport) => {
   //edit user's admin
   app.get('/admin/users', authenticatedAdmin, adminController.editUser)
   app.put("/admin//users/:id", authenticatedAdmin, adminController.putUser)
+
+  //category
+  //瀏覽所有categories
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+  //新增
+  app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+
+  //edit
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)  //修改頁面
+
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
+
+  //delete
+  app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+
+
+
+
 
 
 

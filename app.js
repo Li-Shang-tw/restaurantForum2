@@ -16,7 +16,7 @@ app.use('/upload', express.static(__dirname + '/upload'))
 
 const handlebars = require('express-handlebars')
 //使用handlebars template
-app.engine('handlebars', handlebars({ defaultLayout: "main" }))
+app.engine('handlebars', handlebars({ defaultLayout: "main", helpers: require('./config/handlebars-helpers') }))
 app.set('view engine', 'handlebars')
 
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))

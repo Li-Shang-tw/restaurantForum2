@@ -4,10 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN // 加入 isAdmin 欄位
+
+    isAdmin: DataTypes.BOOLEAN
   }, {});
   User.associate = function (models) {
-    // associations can be defined here
+    User.hasMany(models.Comment)
   };
   return User;
 };
