@@ -59,7 +59,7 @@ module.exports = (app, passport) => {
   //profile
   app.get('/users/:id', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
-  app.put('/users/:id', authenticated, upload.single('img'), userController.putUser)
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
 
 

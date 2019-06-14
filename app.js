@@ -5,6 +5,9 @@ const port = process.env.PORT || 3000
 const bodyparser = require('body-parser')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
+if (process.env.NODE_ENV !== 'production') {      // 如果不是 production 模式
+  require('dotenv').config()                      // 使用 dotenv 讀取 .env 檔案
+}
 
 const flash = require('connect-flash')
 const session = require('express-session')

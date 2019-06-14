@@ -66,47 +66,37 @@ const userController = {
       })
   },
 
-
   putUser: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', "name didn't exist")
-      return res.redirect('back')
+    //在別人的profile頁面，頁面的id和local variable的id不同
+    if (Number(req.params.id) !== Number(req.user.id)) {
+      req.flash('error_messages', '你無法編輯其他人的profile！')
+      return res.redirect(`/users/${req.params.id}`)
     }
-
     const { file } = req
     if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
         return User.findByPk(req.params.id)
           .then((user) => {
             user.update({
               name: req.body.name,
-              img: file ? img.data.link : user.img,
-
+              image: img.data.link
+            }).then((user) => {
+              res.redirect(`/users/${req.params.id}`)
             })
-              .then((user) => {
-                req.flash('success_messages', 'User was successfully to update')
-                res.redirect(`/users/${req.params.id}`)
-              })
           })
       })
-    }
-    else
-      return
-    User.findByPk(req.params.id)
-      .then((user) => {
-        user.update({
-          name: req.body.name,
-
-          img: user.img,
-
-        })
-          .then((user) => {
-            req.flash('success_messages', 'User was successfully to update')
+    } else {
+      return User.findByPk(req.params.id)
+        .then((user) => {
+          user.update({
+            name: req.body.name
+          }).then((user) => {
             res.redirect(`/users/${req.params.id}`)
           })
-      })
-  },
+        })
+    }
+  }
 }
 
 module.exports = userController
