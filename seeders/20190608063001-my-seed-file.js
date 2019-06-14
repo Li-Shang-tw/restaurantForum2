@@ -42,7 +42,7 @@ module.exports = {
             updatedAt: new Date()
           })
         ), {})
-    return queryInterface.bulkInsert('Restaurants',
+    queryInterface.bulkInsert('Restaurants',
       Array.from({ length: 50 }).map(d =>
         ({
           name: faker.name.findName(),
@@ -56,6 +56,18 @@ module.exports = {
           CategoryId: Math.floor(Math.random() * 5) + 1
         })
       ), {});
+    // generate comment seed data
+    return queryInterface.bulkInsert('Comments',
+      [...Array(150)].map((item, index) => index).map(i =>
+        ({
+          id: i + 1,
+          text: faker.lorem.sentence(),
+          userId: Math.floor(Math.random() * 3) + 1,
+          restaurantId: i % 50 + 1,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+      ), {})
   },
   down: (queryInterface, Sequelize) => {
     queryInterface.bulkDelete('Users', null, {});
