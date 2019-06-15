@@ -3,6 +3,28 @@
       style="width: 250px;margin-bottom: 25px;"></div>
   <div class="col">
     <h1>{{user.name}}</h1>
-    <a href="/users/{{user.id}}/edit" class='btn'>edit</a>
+    <h3 class="mt-4">{{user.email}}</h3>
+    <a href="/users/{{user.id}}/edit" class="btn btn-primary mt-3">edit</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header mb-3">
+    <strong>{{ user.Comments.length}}</strong> 已評論Comments
+  </div>
+  <div class="row">
+    {{#each user.Comments}}
+    <div class="col mt-3">
+      <div class="card">
+        <div class="card-header">
+          <a href="/restaurants/{{this.Restaurant.id}}">{{this.Restaurant.name}}</a>
+        </div>
+        <div class="card-body">
+          <img src="{{this.Restaurant.image}}" alt=" {{this.Restaurant.name}}">
+        </div>
+      </div>
+
+    </div>
+    {{/each}}
   </div>
 </div>
