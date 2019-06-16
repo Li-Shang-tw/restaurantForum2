@@ -67,7 +67,7 @@ module.exports = {
         ({
           id: i + 1,
           text: faker.lorem.sentence(),
-          userId: Math.floor(Math.random() * 3) + 1,
+          UserId: Math.floor(Math.random() * 3) + 1,
           restaurantId: i % 50 + 1,
           createdAt: new Date(),
           updatedAt: new Date()
