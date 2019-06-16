@@ -136,7 +136,7 @@ const adminController = {
   //edit user's admin
   editUser: (req, res) => {
     return User.findAll().then(users => {
-      return res.render('admin/userEdit', { users: users })
+      return res.render('admin/users', { users: users })
     })
   },
   putUser: (req, res) => {
