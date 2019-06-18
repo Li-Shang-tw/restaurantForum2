@@ -31,14 +31,16 @@ let restController = {
       //////////////////////////////////////      
       const data = result.rows.map(r => ({
         ...r.dataValues,
-        description: r.dataValues.description.substring(0, 50)
+        description: r.dataValues.description.substring(0, 50),
+        //在data中新增isFavorited 和 isLiked，不存在於資料庫
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),//傳回true /false
+        isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id)//傳回true /false
       }))
       Category.findAll().then(categories => { // 取出 categoies 
         return res.render('restaurants', {
           restaurants: data,
           categories: categories,
-          categoryId: categoryId/*在active的部分會用到 */,
-          page: page,
+          categoryId: categoryId,/*在active的部分會用到 */
           totalPage: totalPage,
           prev: prev,
           next: next
@@ -50,15 +52,17 @@ let restController = {
     return Restaurant.findByPk(req.params.id, {
       include: [
         Category,
+        { model: User, as: 'FavoritedUsers' },
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
       restaurant.update({
         viewCounts: restaurant.viewCounts + 1
       })
-      return res.render('restaurant', {
-        restaurant: restaurant
-      })
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+      const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
+      return res.render('restaurant', { restaurant: restaurant, isFavorited: isFavorited, isLiked: isLiked })
+
     })
   },
   //detail dashboard
