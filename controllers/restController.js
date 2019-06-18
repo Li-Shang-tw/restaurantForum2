@@ -5,6 +5,7 @@ const User = db.User
 const Category = db.Category
 const pageLimit = 10
 
+
 let restController = {
   getRestaurants: (req, res) => {
 
@@ -52,7 +53,9 @@ let restController = {
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
-
+      restaurant.update({
+        viewCounts: restaurant.viewCounts + 1
+      })
       return res.render('restaurant', {
         restaurant: restaurant
       })
