@@ -42,15 +42,16 @@ module.exports = (app, passport) => {
   })
   //列出所有restaurants的頁面
   app.get('/restaurants', authenticated, restController.getRestaurants)
+
+  //feeds
+  app.get('/restaurants/feeds', authenticated, restController.getFeeds)
+
   //detail
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
-  //admin首頁導向restaurants
-  app.get('/admin', authenticatedAdmin, (req, res) => {
-    res.redirect('/admin/restaurants')
-  })
-  //列出所有restaurants的頁面
-  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
+  //detail dashboard
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
+
 
   //comment
   //新增
@@ -61,7 +62,12 @@ module.exports = (app, passport) => {
   app.get('/users/:id/edit', authenticated, userController.editUser)
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
-
+  //admin首頁導向restaurants
+  app.get('/admin', authenticatedAdmin, (req, res) => {
+    res.redirect('/admin/restaurants')
+  })
+  //列出所有restaurants的頁面
+  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 
   //admin的CRUD路由
   //Create
@@ -92,6 +98,10 @@ module.exports = (app, passport) => {
 
   //delete
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+
+  //favorite 
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
 
 
 

@@ -52,10 +52,45 @@ let restController = {
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
+
       return res.render('restaurant', {
         restaurant: restaurant
       })
     })
-  }
+  },
+  //detail dashboard
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [
+        Category,
+        { model: Comment, include: [User] }
+      ]
+    }).then(restaurant => {
+      console.log(restaurant)
+      return res.render('dashboard', {
+        restaurant: restaurant
+      })
+    })
+  },
+  getFeeds: (req, res) => {
+    return Restaurant.findAll({
+      limit: 10,
+      order: [['createAt', 'DESC']],
+      include: [Category]
+    })
+      .then(restaurants =>
+        Comment.findAll({
+          limit: 10,
+          order: [['createAt', 'DESC']],
+          include: [User, Restaurant]
+        }))
+      .then(comments => {
+        return res.render('feeds', {
+          restaurants: restaurants,
+          comments: comments
+        })
+      })
+  },
+
 }
 module.exports = restController
