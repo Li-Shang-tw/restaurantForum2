@@ -57,6 +57,15 @@ module.exports = (app, passport) => {
   //新增
   app.post('/comments', authenticated, commentController.postComment)
 
+
+  //top10 users
+  app.get('/users/top', authenticated, userController.getTopUser)
+  //follow
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
+
+
+
   //profile
   app.get('/users/:id', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
@@ -106,7 +115,6 @@ module.exports = (app, passport) => {
   //like
   app.post('/Like/:restaurantId', authenticated, userController.addLike)
   app.delete('/Like/:restaurantId', authenticated, userController.removeLike)
-
 
 
 

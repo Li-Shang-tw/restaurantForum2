@@ -1,11 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const followship = sequelize.define('followship', {
+  const Followship = sequelize.define('Followship', {
     followerId: DataTypes.INTEGER,
     followingId: DataTypes.INTEGER
   }, {});
-  followship.associate = function(models) {
+  Followship.associate = function(models) {
     // associations can be defined here
   };
-  return followship;
+  return Followship;
 };
