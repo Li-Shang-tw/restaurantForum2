@@ -64,14 +64,21 @@ const userController = {
     })
       .then(user => {
 
-        return res.render('profile', { user: user })
+        return res.render('profile', { profile: user })
       })
   },
   editUser: (req, res) => {
+    //在別人的profile頁面，頁面的id和local variable的id不同
+    if (Number(req.params.id) !== Number(req.user.id)) {
+      req.flash('error_messages', '你無法編輯其他人的profile！')
+      return res.redirect(`/users/${req.params.id}`)
+    }
+
     return User.findByPk(req.params.id)
       .then(user => {
         return res.render('profileEdit', { user: user })
       })
+
   },
 
   putUser: (req, res) => {
