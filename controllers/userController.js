@@ -58,14 +58,35 @@ const userController = {
   //個人資料
   //瀏覽頁面
   getUser: (req, res) => {
-
+    const duplicatedRestaurants = []//創個空陣列來裝備評論的餐廳陣列
+    const userId = req.user.id
     return User.findByPk(req.params.id, {
-      include:
-        { model: Comment, include: [Restaurant] }
+      include: [
+        { model: Comment, include: Restaurant },
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+      ]
     })
       .then(user => {
 
-        return res.render('profile', { profile: user })
+        //ㄧ.去除評論過的餐廳array中重複的餐廳
+        const commentArray = user.Comments //取出所有的評論陣列
+        //
+        commentArray.forEach(element => {//由評論陣列搜索並拉出被評論過的餐廳物件
+          duplicatedRestaurants.push(element.Restaurant.dataValues)//將被評論過的餐廳物件裝進 duplicatedRestaurants (有重複)
+        });
+        //得到沒重複的餐廳陣列
+        //1.JSON.stringify(item) 將重複的餐廳陣列中的餐廳物件轉成字串，以利set判斷是否重複 
+        //2.set去除重複的餐廳物件(現在是字串)，得出沒重複的餐廳陣列(但內含物為字串)
+        //3.item => JSON.parse 將內含物從字串轉回物件         
+        const UnduplicatedRestaurants = [...new Set(duplicatedRestaurants.map(item => JSON.stringify(item)))].map(item => JSON.parse(item))
+        //二.判斷user是否已追蹤
+        user.isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+
+
+        console.log(user.isFollowed)
+        return res.render('profile', { profile: user, Commentedrestaurants: UnduplicatedRestaurants, userId: userId })
       })
   },
   editUser: (req, res) => {
@@ -164,7 +185,6 @@ const userController = {
     return User.findAll({
       include: [
         { model: User, as: 'Followers' }//找粉絲
-
       ]
     }).then(users => {
       users = users.map(user => ({
