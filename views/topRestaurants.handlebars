@@ -1,0 +1,37 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="/restaurants">首頁</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/restaurants/feeds">最新動態</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/restaurants/top">TOP10 人氣餐廳</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="/users/top">美食達人</a>
+  </li>
+</ul>
+<br /><br />
+<h1>TOP10 人氣餐廳</h1>
+<hr />
+<div class="row" style="text-align: center;">
+  {{#each restaurants}}
+  <div class="col-3">
+    <a href="/users/{{this.id}}">
+      <img class="" src="{{this.image}}" width="140px" height="140px">
+    </a>
+    <h2>{{this.name}}</h2>
+    <span class="badge badge-secondary">收藏人數：{{this.FavoriteCount}}</span>
+    <p>
+      {{#if this.isFavorited }}
+      <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit"
+          class="btn btn-danger">取消收藏</button></form>
+      {{else}}
+      <form action="/favorite/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
+          class="btn btn-primary">收藏</button></form>
+      {{/if}}
+    </p>
+  </div>
+  {{/each}}
+</div>
