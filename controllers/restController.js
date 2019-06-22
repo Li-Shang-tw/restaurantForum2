@@ -104,7 +104,6 @@ let restController = {
   //top 10 restaurants
   getTopRestaurants: (req, res) => {
     return Restaurant.findAll({
-      limit: 10,
       include: [{
         model: User, as: 'FavoritedUsers'
       }]
@@ -118,6 +117,8 @@ let restController = {
 
       }))
       restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount)
+      //取前十名的restaurants
+      restaurants = restaurants.slice(0, 10)
       res.render('topRestaurants', { restaurants: restaurants })
     })
   }
