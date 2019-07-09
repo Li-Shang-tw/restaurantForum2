@@ -42,4 +42,4 @@ app.listen(port, () => {
   console.log('express is running')
 })
 
-require('./routes')(app, passport)
+require('./routes')(app)
