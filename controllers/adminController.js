@@ -14,6 +14,15 @@ const adminController = {
       return res.render('admin/restaurants', data)//callback 在adminService中帶入參數呼叫
     })
   },
+
+  //Read單一restaurant
+  getRestaurant: (req, res) => {
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data)//callback 在adminService中帶入參數呼叫
+    })
+  },
+
+
   //Create
   createRestaurant: (req, res) => {
     Category.findAll().then(categories => {
@@ -61,14 +70,7 @@ const adminController = {
       })
     }
   },
-  //Read單一restaurant
-  getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { include: [Category] }).then(restaurant => {
-      return res.render('admin/restaurant', {
-        restaurant: restaurant
-      })
-    })
-  },
+
   //edit單一restaurant
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id).then(restaurant => {
