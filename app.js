@@ -13,6 +13,7 @@ const flash = require('connect-flash')
 const session = require('express-session')
 
 app.use(bodyparser.urlencoded({ extended: true }))
+app.use(bodyparser.json())
 app.use(methodOverride('_method'))
 
 app.use('/upload', express.static(__dirname + '/upload'))
